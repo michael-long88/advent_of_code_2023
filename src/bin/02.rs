@@ -2,7 +2,7 @@ use regex::Regex;
 
 advent_of_code::solution!(2);
 
-pub fn parse_part1(input: &str) -> Vec<u32>{
+pub fn parse_part1(input: &str) -> Vec<u32> {
     let max_counts = [12, 13, 14];
     let games = input
         .split('\n')
@@ -14,27 +14,51 @@ pub fn parse_part1(input: &str) -> Vec<u32>{
 
             let valid_red_counts = red_regex
                 .find_iter(game)
-                .map(|count| count.as_str().split(' ').next().unwrap().parse::<usize>().unwrap())
+                .map(|count| {
+                    count
+                        .as_str()
+                        .split(' ')
+                        .next()
+                        .unwrap()
+                        .parse::<usize>()
+                        .unwrap()
+                })
                 .all(|count| count <= max_counts[0]);
             let valid_green_counts = green_regex
                 .find_iter(game)
-                .map(|count| count.as_str().split(' ').next().unwrap().parse::<usize>().unwrap())
+                .map(|count| {
+                    count
+                        .as_str()
+                        .split(' ')
+                        .next()
+                        .unwrap()
+                        .parse::<usize>()
+                        .unwrap()
+                })
                 .all(|count| count <= max_counts[1]);
             let valid_blue_counts = blue_regex
                 .find_iter(game)
-                .map(|count| count.as_str().split(' ').next().unwrap().parse::<usize>().unwrap())
+                .map(|count| {
+                    count
+                        .as_str()
+                        .split(' ')
+                        .next()
+                        .unwrap()
+                        .parse::<usize>()
+                        .unwrap()
+                })
                 .all(|count| count <= max_counts[2]);
 
             valid_red_counts && valid_blue_counts && valid_green_counts
         })
-        .map(|game| game
-            .split(' ')
-            .nth(1)
-            .unwrap()
-            .replace(':', "")
-            .parse::<u32>()
-            .unwrap()
-        )
+        .map(|game| {
+            game.split(' ')
+                .nth(1)
+                .unwrap()
+                .replace(':', "")
+                .parse::<u32>()
+                .unwrap()
+        })
         .collect();
 
     games
@@ -51,27 +75,56 @@ pub fn parse_part2(input: &str) -> Vec<u32> {
 
             let smallest_red_count = red_regex
                 .find_iter(game)
-                .map(|count| count.as_str().split(' ').next().unwrap().parse::<u32>().unwrap())
+                .map(|count| {
+                    count
+                        .as_str()
+                        .split(' ')
+                        .next()
+                        .unwrap()
+                        .parse::<u32>()
+                        .unwrap()
+                })
                 .max()
                 .unwrap();
             let smallest_green_count = green_regex
                 .find_iter(game)
-                .map(|count| count.as_str().split(' ').next().unwrap().parse::<u32>().unwrap())
+                .map(|count| {
+                    count
+                        .as_str()
+                        .split(' ')
+                        .next()
+                        .unwrap()
+                        .parse::<u32>()
+                        .unwrap()
+                })
                 .max()
                 .unwrap();
             let smallest_blue_count = blue_regex
                 .find_iter(game)
-                .map(|count| count.as_str().split(' ').next().unwrap().parse::<u32>().unwrap())
+                .map(|count| {
+                    count
+                        .as_str()
+                        .split(' ')
+                        .next()
+                        .unwrap()
+                        .parse::<u32>()
+                        .unwrap()
+                })
                 .max()
                 .unwrap();
 
-            [smallest_red_count, smallest_green_count, smallest_blue_count].iter().product()
+            [
+                smallest_red_count,
+                smallest_green_count,
+                smallest_blue_count,
+            ]
+            .iter()
+            .product()
         })
         .collect();
 
     games
 }
-
 
 pub fn part_one(input: &str) -> Option<u32> {
     Some(parse_part1(input).iter().sum())
