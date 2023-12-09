@@ -3,17 +3,12 @@ use std::collections::HashMap;
 advent_of_code::solution!(8);
 
 pub struct NodeMap {
-    pub nodes: HashMap<String, Vec<String>>
+    pub nodes: HashMap<String, Vec<String>>,
 }
 
 pub fn parse(input: &str) -> (Vec<usize>, NodeMap) {
-    let instruction_mapping: HashMap<char, usize> = HashMap::from([
-        ('L', 0),
-        ('R', 1),
-    ]);
-    let mut lines = input
-        .lines()
-        .filter(|line| !line.is_empty());
+    let instruction_mapping: HashMap<char, usize> = HashMap::from([('L', 0), ('R', 1)]);
+    let mut lines = input.lines().filter(|line| !line.is_empty());
     let instructions = lines
         .next()
         .unwrap()
@@ -37,7 +32,11 @@ pub fn parse(input: &str) -> (Vec<usize>, NodeMap) {
     (instructions, NodeMap { nodes })
 }
 
-pub fn get_step_count(mut current_node_name: String, instructions: &Vec<usize>, node_map: &NodeMap) -> u64 {
+pub fn get_step_count(
+    mut current_node_name: String,
+    instructions: &Vec<usize>,
+    node_map: &NodeMap,
+) -> u64 {
     let mut instruction_index = 0;
     let mut instruction_count = 0;
     let instructions_length = instructions.len();
@@ -66,31 +65,27 @@ pub fn greatest_common_divisor(mut a: u64, mut b: u64) -> u64 {
         a = b;
         b = tmp_a % b;
     }
-    
+
     a
 }
 
 pub fn part_one(input: &str) -> Option<u64> {
     let (instructions, node_map) = parse(input);
-    
+
     let nodes_to_process = node_map.nodes.keys().filter(|key| key.ends_with('A'));
     let step_count: Vec<u64> = nodes_to_process
-        .map(|node_name| {
-            get_step_count(node_name.to_string(), &instructions, &node_map)
-        })
+        .map(|node_name| get_step_count(node_name.to_string(), &instructions, &node_map))
         .collect();
-    
+
     Some(step_count[0])
 }
 
 pub fn part_two(input: &str) -> Option<u64> {
     let (instructions, node_map) = parse(input);
-    
+
     let nodes_to_process = node_map.nodes.keys().filter(|key| key.ends_with('A'));
     let step_count = nodes_to_process
-        .map(|node_name| {
-            get_step_count(node_name.to_string(), &instructions, &node_map)
-        });
+        .map(|node_name| get_step_count(node_name.to_string(), &instructions, &node_map));
 
     let lcm = step_count.fold(1, least_common_multiple);
 
@@ -103,13 +98,17 @@ mod tests {
 
     #[test]
     fn test_part_one() {
-        let result = part_one(&advent_of_code::template::read_file_part("examples", DAY, 1));
+        let result = part_one(&advent_of_code::template::read_file_part(
+            "examples", DAY, 1,
+        ));
         assert_eq!(result, Some(6));
     }
 
     #[test]
     fn test_part_two() {
-        let result = part_two(&advent_of_code::template::read_file_part("examples", DAY, 2));
+        let result = part_two(&advent_of_code::template::read_file_part(
+            "examples", DAY, 2,
+        ));
         assert_eq!(result, Some(6));
     }
 }
