@@ -17,11 +17,7 @@ pub fn parse(input: &str) -> Vec<Vec<char>> {
     let space_image = input
         .lines()
         .filter(|space_point| !space_point.is_empty())
-        .map(|space_point| {
-            space_point
-                .chars()
-                .collect()
-        })
+        .map(|space_point| space_point.chars().collect())
         .collect();
 
     space_image
@@ -37,30 +33,35 @@ pub fn get_space_map_info(space_image: Vec<Vec<char>>) -> (Vec<usize>, Vec<usize
         if row.iter().all(|space_point| space_point == &'.') {
             row_expandor_indices.push(y_index);
         }
-        let indices: Vec<usize> = row.iter().enumerate()
+        let indices: Vec<usize> = row
+            .iter()
+            .enumerate()
             .filter_map(|(x_index, &space_point)| {
-                if space_point == '#' { 
-                    points.push(Point { x: x_index as i64, y: y_index as i64 });
+                if space_point == '#' {
+                    points.push(Point {
+                        x: x_index as i64,
+                        y: y_index as i64,
+                    });
                     Some(x_index)
-                } else { 
-                    None 
+                } else {
+                    None
                 }
             })
             .collect();
         non_column_expandor_indices.extend(indices);
-        });
+    });
 
     let column_expandor_indices = total_columns
         .filter(|column_index| !non_column_expandor_indices.contains(column_index))
         .collect::<Vec<usize>>();
 
     (row_expandor_indices, column_expandor_indices, points)
-
 }
 
 pub fn part_one(input: &str) -> Option<i64> {
     let space_image = parse(input);
-    let (row_expandor_indices, column_expandor_indices, mut points) = get_space_map_info(space_image);
+    let (row_expandor_indices, column_expandor_indices, mut points) =
+        get_space_map_info(space_image);
 
     points.iter_mut().for_each(|point| {
         let prefix_columns = column_expandor_indices
@@ -89,7 +90,8 @@ pub fn part_one(input: &str) -> Option<i64> {
 
 pub fn part_two(input: &str) -> Option<i64> {
     let space_image = parse(input);
-    let (row_expandor_indices, column_expandor_indices, mut points) = get_space_map_info(space_image);
+    let (row_expandor_indices, column_expandor_indices, mut points) =
+        get_space_map_info(space_image);
 
     points.iter_mut().for_each(|point| {
         let prefix_columns = column_expandor_indices
