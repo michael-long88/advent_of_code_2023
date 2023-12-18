@@ -115,7 +115,8 @@ pub fn part_two(input: &str) -> Option<i64> {
         }
     }
 
-    Some(distances.iter().sum::<i64>())
+    // Some(distances.iter().sum::<i64>())
+    None
 }
 
 #[cfg(test)]
